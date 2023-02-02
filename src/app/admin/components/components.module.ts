@@ -15,6 +15,8 @@ import { CustomerModule } from './customer/customer.module';
     ProductsModule,
     DashboardModule,
     CustomerModule
-  ]
+  ],
+  
+
 })
 export class ComponentsModule { }
