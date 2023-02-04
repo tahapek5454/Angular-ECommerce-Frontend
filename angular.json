@@ -34,6 +34,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/alertifyjs/build/css/alertify.min.css",
               "node_modules/alertifyjs/build/css/themes/semantic.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
             "scripts": [              
