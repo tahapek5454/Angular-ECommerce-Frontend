@@ -17,10 +17,10 @@ export class ProductsComponent extends BaseComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.showSpinner(SpinnerType.Square)
-    this.httpClientService.get({
-      fullEndPoint:"https://jsonplaceholder.typicode.com/posts"
-    }).subscribe(data => console.log(data))
+    // this.showSpinner(SpinnerType.Square)
+    // this.httpClientService.get({
+    //   fullEndPoint:"https://jsonplaceholder.typicode.com/posts"
+    // }).subscribe(data => console.log(data))
 
     // this.httpClientService.post({
     //   controller:"products"
