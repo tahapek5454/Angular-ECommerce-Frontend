@@ -1,8 +1,10 @@
-import { OnInit } from '@angular/core';
+import { OnInit, ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
+import { CreateProduct } from 'src/app/contracts/create_product';
 import { HttpClientService } from 'src/app/service/common/http-client.service';
+import { ListComponent } from './list/list.component';
 
 @Component({
   selector: 'app-products',
@@ -17,38 +19,14 @@ export class ProductsComponent extends BaseComponent implements OnInit{
 
   ngOnInit(): void {
 
-    // this.showSpinner(SpinnerType.Square)
-    // this.httpClientService.get({
-    //   fullEndPoint:"https://jsonplaceholder.typicode.com/posts"
-    // }).subscribe(data => console.log(data))
+   
+  }
 
-    // this.httpClientService.post({
-    //   controller:"products"
-    // },
-    // {
-    //   name:"kalem",
-    //   stock:"20",
-    //   price:"15"
-    // }).subscribe()
+  @ViewChild(ListComponent) listComponent:ListComponent
 
-    // this.httpClientService.put(
-    //   {
-    //     controller:"products"
-    //   },
-    //   {
-    //     id:"f73471e5-5d0f-493a-9873-cf21d7e612e0",
-    //     name:"renk",
-    //     stock:1,
-    //     price:36
-    //   }
-    // ).subscribe()
+  createdProduct(createdProduct:CreateProduct){
 
-    // this.httpClientService.delete(
-    //   {
-    //     controller:"products"
-    //   },
-    //   "f73471e5-5d0f-493a-9873-cf21d7e612e0"
-    // ).subscribe()
+    this.listComponent.getProducts()
 
   }
 
