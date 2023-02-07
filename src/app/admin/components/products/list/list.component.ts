@@ -7,6 +7,8 @@ import { ListProduct } from 'src/app/contracts/list_product';
 import { AlertifyService, MessageType } from 'src/app/service/admin/alertify.service';
 import { ProductService } from 'src/app/service/common/models/product.service';
 
+declare var $:any
+
 
 @Component({
   selector: 'app-list',
@@ -16,7 +18,7 @@ import { ProductService } from 'src/app/service/common/models/product.service';
 export class ListComponent extends BaseComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate', 'updatedDate'];
+  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate', 'updatedDate', 'edit','delete'];
   dataSource:MatTableDataSource<ListProduct>= null
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
