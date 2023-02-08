@@ -1,10 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/base/base.component';
 import { DeleteDialogComponent, DeleteState } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { AlertifyService, MessageType } from 'src/app/service/admin/alertify.service';
-import { ProductService } from 'src/app/service/common/models/product.service';
+import { HttpClientService } from 'src/app/service/common/http-client.service';
+
 declare var $:any
 
 @Directive({
@@ -15,7 +17,7 @@ export class DeleteDirective {
   constructor(
     private elemet:ElementRef,
     private renderer:Renderer2,
-    private productService: ProductService,
+    private httpClientService: HttpClientService,
     private spinner:NgxSpinnerService,
     public dialog: MatDialog,
     private alertify:AlertifyService) { 
@@ -31,21 +33,31 @@ export class DeleteDirective {
 
 
     @Input() id:string
+    @Input() controller:string
     @Output() callBack: EventEmitter<any> = new EventEmitter()
 
     @HostListener("click")
     async onClick(){  
+    
       this.openDialog(async ()=>{
         const td: HTMLTableCellElement = this.elemet.nativeElement
-        await this.productService.delete(this.id)
-        this.spinner.show(SpinnerType.BallSpin)
-        $(td.parentElement).fadeOut(1500, () => {
-          this.spinner.hide(SpinnerType.BallSpin)
-          this.callBack.emit()
-          this.alertify.message("Silme Islmei Basarili",{
-            messageType: MessageType.success
-          })
-        })
+        this.httpClientService.delete(
+          {controller:this.controller},
+          this.id).subscribe(data => {
+            this.spinner.show(SpinnerType.BallSpin)
+            $(td.parentElement).fadeOut(1500, () => {
+              this.spinner.hide(SpinnerType.BallSpin)
+              this.callBack.emit()
+              this.alertify.message("Silme Islmei Basarili",{
+                messageType: MessageType.success
+              })
+            })
+          }, (errorResponse:HttpErrorResponse) => {
+            this.spinner.hide(SpinnerType.BallSpin)
+            this.alertify.message(errorResponse.message,{
+              messageType: MessageType.error
+            })
+          })     
       })
       
     }

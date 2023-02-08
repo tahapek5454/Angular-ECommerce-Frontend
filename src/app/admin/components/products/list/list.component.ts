@@ -26,6 +26,8 @@ export class ListComponent extends BaseComponent implements OnInit {
     super(spinnerService)
   }
 
+ 
+
 
   async ngOnInit() {
 
