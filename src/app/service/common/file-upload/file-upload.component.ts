@@ -1,8 +1,11 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { FileUploadDialogComponent, FileUploadDialogState } from 'src/app/dialogs/file-upload-dialog/file-upload-dialog.component';
 import { AlertifyService, MessageType } from '../../admin/alertify.service';
 import { CustomToastrService, ToastrMessageType } from '../../ui/custom-toastr.service';
+import { DialogService } from '../dialog.service';
 import { HttpClientService } from '../http-client.service';
 @Component({
   selector: 'app-file-upload',
@@ -14,7 +17,9 @@ export class FileUploadComponent {
   constructor(
     private httpClientService:HttpClientService,
     private aletift:AlertifyService,
-    private customToastrService:CustomToastrService
+    private customToastrService:CustomToastrService,
+    private dialog:MatDialog,
+    private dialogService:DialogService
     ){}
 
   public files: NgxFileDropEntry[];
@@ -32,52 +37,62 @@ export class FileUploadComponent {
       })
     }
 
-    this.httpClientService.post(
+
+    this.dialogService.openDialog(
       {
-        controller: this.options.controller,
-        action: this.options.action,
-        queryString: this.options.queryString,
-        headers: new HttpHeaders({"responseType": "blob"})
-      },
-      fileData 
-    ).subscribe(result => {
-
-      if(this.options.isAdminPage){
-
-        this.aletift.message(
-          "Dosyalar Basariyla Yuklendi",
-          {messageType: MessageType.success})
-
-      }else{
-
-        this.customToastrService.message(
-          "Dosyalar Basariyla Yuklendi",
-           "Basarili",
-           {messageType: ToastrMessageType.success})
-
-      }
-
-    }, (errorResponse:HttpErrorResponse) =>{
-
-      if(this.options.isAdminPage){
-
-        this.aletift.message(
-          errorResponse.message,
-          {messageType: MessageType.error})
-
-      }else{
-
-        this.customToastrService.message(
-          errorResponse.message,
-           "Hata",
-           {messageType: ToastrMessageType.error})
-
-      }
-
-    })
+        componentType: FileUploadDialogComponent,
+        data: FileUploadDialogState.Yes,
+        afterClosed: ()=>{
+          this.httpClientService.post(
+            {
+              controller: this.options.controller,
+              action: this.options.action,
+              queryString: this.options.queryString,
+              headers: new HttpHeaders({"responseType": "blob"})
+            },
+            fileData 
+          ).subscribe(result => {
       
-  }
+            if(this.options.isAdminPage){
+      
+              this.aletift.message(
+                "Dosyalar Basariyla Yuklendi",
+                {messageType: MessageType.success})
+      
+            }else{
+      
+              this.customToastrService.message(
+                "Dosyalar Basariyla Yuklendi",
+                 "Basarili",
+                 {messageType: ToastrMessageType.success})
+      
+            }
+      
+          }, (errorResponse:HttpErrorResponse) =>{
+      
+            if(this.options.isAdminPage){
+      
+              this.aletift.message(
+                errorResponse.message,
+                {messageType: MessageType.error})
+      
+            }else{
+      
+              this.customToastrService.message(
+                errorResponse.message,
+                 "Hata",
+                 {messageType: ToastrMessageType.error})
+      
+            }
+      
+          })  
+        }
+        
+      }
+    )
 
+    
+  }
 }
 
 export class FileUploadOptions{
