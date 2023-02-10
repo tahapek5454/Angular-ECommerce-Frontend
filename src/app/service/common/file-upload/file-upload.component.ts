@@ -2,6 +2,8 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerType } from 'src/app/base/base.component';
 import { FileUploadDialogComponent, FileUploadDialogState } from 'src/app/dialogs/file-upload-dialog/file-upload-dialog.component';
 import { AlertifyService, MessageType } from '../../admin/alertify.service';
 import { CustomToastrService, ToastrMessageType } from '../../ui/custom-toastr.service';
@@ -19,7 +21,8 @@ export class FileUploadComponent {
     private aletift:AlertifyService,
     private customToastrService:CustomToastrService,
     private dialog:MatDialog,
-    private dialogService:DialogService
+    private dialogService:DialogService,
+    private spinnerService: NgxSpinnerService
     ){}
 
   public files: NgxFileDropEntry[];
@@ -43,6 +46,7 @@ export class FileUploadComponent {
         componentType: FileUploadDialogComponent,
         data: FileUploadDialogState.Yes,
         afterClosed: ()=>{
+          this.spinnerService.show(SpinnerType.BallAtom)
           this.httpClientService.post(
             {
               controller: this.options.controller,
@@ -52,7 +56,8 @@ export class FileUploadComponent {
             },
             fileData 
           ).subscribe(result => {
-      
+
+            this.spinnerService.hide(SpinnerType.BallAtom)
             if(this.options.isAdminPage){
       
               this.aletift.message(
@@ -69,6 +74,9 @@ export class FileUploadComponent {
             }
       
           }, (errorResponse:HttpErrorResponse) =>{
+
+            this.spinnerService.hide(SpinnerType.BallAtom)
+
       
             if(this.options.isAdminPage){
       
