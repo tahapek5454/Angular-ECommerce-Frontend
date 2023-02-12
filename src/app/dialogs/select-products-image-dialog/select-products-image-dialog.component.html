@@ -3,6 +3,22 @@
 
 <app-file-upload [options]="options"></app-file-upload>
 
+
+
+<mat-card class="product-image-card" *ngFor="let image of images">
+  <mat-card-header>
+   
+  </mat-card-header>
+  <img mat-card-image class="image-for" [src]="image.path" alt="Photo of a Shiba Inu">
+  <mat-card-content>
+    
+  </mat-card-content>
+  <mat-card-actions>
+    <button style="background-color: rgb(223, 50, 19);" (click)="deleteImage(image.id, $event)" mat-button>Delete</button>
+  </mat-card-actions>
+</mat-card>
+
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
