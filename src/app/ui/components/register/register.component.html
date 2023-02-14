@@ -1,0 +1,94 @@
+<div class="container">
+
+    <div class="row mt-4">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+        
+            <form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" formControlName="name" class="form-control" id="name" placeholder="ExampleName"
+                            [ngClass]="{'is-invalid':submitted && component.name.errors}">
+                            <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                             component.name.errors?.required">Lütfen adı boş geçmeyiniz.</small>
+                            <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                             (component.name.errors?.maxlength || component.name.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label for="surname" class="form-label">Surname</label>
+                            <input type="text" formControlName="surname" class="form-control" id="surname" placeholder="ExampleSurname"
+                            [ngClass]="{'is-invalid':submitted && component.surname.errors}">
+                            <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                             component.surname.errors?.required">Lütfen soyadı boş geçmeyiniz.</small>
+                            <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                             (component.surname.errors?.maxlength || component.surname.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="mb-3">
+                    <label for="userName" class="form-label">User Name</label>
+                    <input type="text" formControlName="userName" class="form-control" id="userName" placeholder="Example54"
+                    [ngClass]="{'is-invalid':submitted && component.userName.errors}">
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                        component.userName.errors?.required">Lütfen usernamei boş geçmeyiniz.</small>
+                        <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    (component.userName.errors?.maxlength || component.userName.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" formControlName="email" class="form-control" id="email" placeholder="ex@gmail.com"
+                    [ngClass]="{'is-invalid':submitted && component.email.errors}">
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    component.email.errors?.required">Lütfen emaili boş geçmeyiniz.</small>
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    (component.email.errors?.maxlength || component.email.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    component.email.errors?.email">Email formatına uyunuz</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" formControlName="password" class="form-control" id="password" placeholder=""
+                    [ngClass]="{'is-invalid':submitted && component.password.errors}">
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    component.password.errors?.required">Lütfen passwordu boş geçmeyiniz.</small>
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    (component.password.errors?.maxlength || component.password.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="repassword" class="form-label">Re-Password</label>
+                    <input type="password" formControlName="repassword" class="form-control" id="repassword" placeholder=""
+                    [ngClass]="{'is-invalid':submitted && component.repassword.errors}">
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    component.repassword.errors?.required">Lütfen repasswordu boş geçmeyiniz.</small>
+                    <small class="form-text text-muted invalid-feedback" *ngIf="submitted &&
+                    (component.repassword.errors?.maxlength || component.repassword.errors?.minlength)">Lütfen Düzgün Aralıklarda Deger Giriniz</small>
+                    <small *ngIf="submitted && frm.hasError('notSame')">Lütfen şifreyi doğrulayınız.</small>
+
+                </div>
+
+                <div class="mb-3 d-flex justify-content-center">
+                  
+                    <button type="submit" class="btn btn-primary mb-3">Submit</button>
+              
+                </div>
+
+            </form>
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+</div>
