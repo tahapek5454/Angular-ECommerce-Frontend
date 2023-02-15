@@ -1,0 +1,41 @@
+<div class="container">
+
+    <div class="row mt-4">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+        
+            
+
+                <div class="mb-3">
+                    <label for="userNameOrEmail" class="form-label">User Name ya da Email</label>
+                    <input #txtUserNameOrEmail type="text" class="form-control" id="userNameOrEmail" placeholder="Example54"
+                    >
+                    <small class="form-text text-muted invalid-feedback">Lütfen usernamei boş geçmeyiniz.</small>
+                       
+
+                </div>
+      
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input #txtPassword type="password" class="form-control" id="password" placeholder=""
+                    >
+                    <small class="form-text text-muted invalid-feedback">Lütfen passwordu boş geçmeyiniz.</small>
+                    
+
+                </div>
+
+                <div class="mb-3 d-flex justify-content-center">
+                  
+                    <button type="submit" class="btn btn-primary mb-3" 
+                    (click)="login(txtUserNameOrEmail.value, txtPassword.value)">Submit</button>
+              
+                </div>
+
+          
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+</div>
