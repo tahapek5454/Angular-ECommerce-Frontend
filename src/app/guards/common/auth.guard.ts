@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { SpinnerType } from 'src/app/base/base.component';
+import {  _isAuthenticated } from 'src/app/service/common/auth.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/service/ui/custom-toastr.service';
 
 @Injectable({
@@ -23,26 +24,10 @@ export class AuthGuard implements CanActivate {
 
 
       this.spinner.show(SpinnerType.Square)
-      const token : string = localStorage.getItem("accessToken")
-
-
-      // const decodeToken = this.jwtHelper.decodeToken(token)
-      // const expirationDate:Date = this.jwtHelper.getTokenExpirationDate(token)
-      let  isExpire:boolean ;
-
-      try{
-
-        isExpire =  this.jwtHelper.isTokenExpired(token)
-
-      }catch{
-        isExpire = true
-
-
-      }
-
+      
     
 
-      if(!token || isExpire){
+      if(!_isAuthenticated){
 
         this.toastrService.message("Giriş Yapa Yönlendiriliyorsunuz", "Yönlendirme",{
           messageType: ToastrMessageType.info,

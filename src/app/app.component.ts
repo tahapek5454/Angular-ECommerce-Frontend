@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './service/common/auth.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from './service/ui/custom-toastr.service';
 declare var $:any
 
@@ -10,11 +11,18 @@ declare var $:any
 export class AppComponent {
   title = 'ECommerceFrontend';
 
-  constructor(private mytoastrService:CustomToastrService){
-    mytoastrService.message("taha","mehaba", {
-      messageType: ToastrMessageType.info,
+  constructor(private mytoastrService:CustomToastrService, public authService:AuthService){
+    authService.identityCheck()
+  }
+
+
+  signOut(){
+    this.mytoastrService.message("Oturup Kapatıldı", "Oturup Kapama",{
+      messageType: ToastrMessageType.warning,
       position: ToastrPosition.BottomRight
     })
+    localStorage.removeItem("accessToken")
+    this.authService.identityCheck()
   }
 }
 

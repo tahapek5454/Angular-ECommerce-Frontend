@@ -18,10 +18,17 @@
                         <a class="nav-link active" aria-current="page" routerLink="baskets">Baskets</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" routerLink="register">Register</a>
+                        <a class="nav-link active" aria-current="page" routerLink="register"
+                        *ngIf="!authService.isAuthenticated">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" routerLink="login">Log In</a>
+                        <a class="nav-link active" aria-current="page" routerLink="login"
+                        *ngIf="!authService.isAuthenticated">Log In</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" routerLink="" style="color: red;"
+                        (click)="signOut()" *ngIf="authService.isAuthenticated">Exit</a>
                     </li>
     
                     <li class="nav-item dropdown">
@@ -44,7 +51,8 @@
                     </li>
     
                     <li>
-                        <a class="btn btn-outline-success" routerLink="admin">Admin</a>
+                        <a class="btn btn-outline-success" routerLink="admin"
+                        *ngIf="authService.isAuthenticated">Admin</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
