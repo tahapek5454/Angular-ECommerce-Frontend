@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
+
+import { TokenResponse } from 'src/app/contracts/tokens/tokenResponse';
 import { CreateUser } from 'src/app/contracts/users/create_user';
 import { User } from 'src/app/entities/user';
+import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr.service';
 import { HttpClientService } from '../http-client.service';
 
 @Injectable({
@@ -9,7 +12,7 @@ import { HttpClientService } from '../http-client.service';
 })
 export class UserService {
 
-  constructor(private httpClientService:HttpClientService) { }
+  constructor(private httpClientService:HttpClientService, private toastrService:CustomToastrService) { }
 
 
  async create(user:User): Promise<CreateUser>{
@@ -23,15 +26,24 @@ export class UserService {
   }
 
   async login(userNameOrEmail:string, password:string, callBack?: ()=> void):Promise<void>{
-    var observable: Observable<any> = this.httpClientService.post({
+    var observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
       controller:"users",
       action: "LoginUser"
     }, {userNameOrEmail, password})
 
-    await firstValueFrom(observable)
+    const tokenResponse:TokenResponse =  await firstValueFrom(observable) as TokenResponse
+
+    if(tokenResponse){
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+    }
 
     callBack()
 
+    this.toastrService.message("Kullanıcı Girişi Başarılı", "Giriş Başarılı",{
+      messageType: ToastrMessageType.success,
+      position: ToastrPosition.BottomRight
+    })
+    debugger
   }
 
 }
