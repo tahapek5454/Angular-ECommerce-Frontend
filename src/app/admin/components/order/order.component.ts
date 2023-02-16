@@ -16,7 +16,7 @@ export class OrderComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.showSpinner(SpinnerType.Square)
+    
   }
 
 }

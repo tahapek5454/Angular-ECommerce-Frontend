@@ -43,7 +43,7 @@ export class UserService {
       messageType: ToastrMessageType.success,
       position: ToastrPosition.BottomRight
     })
-    debugger
+
   }
 
 }
