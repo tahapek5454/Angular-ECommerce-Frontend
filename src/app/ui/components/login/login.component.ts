@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { AuthService } from 'src/app/service/common/auth.service';
-import { UserService } from 'src/app/service/common/models/user.service';
+import { UserAuthService } from 'src/app/service/common/models/user-auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent extends BaseComponent {
   /**
    *
    */
-  constructor(private userService:UserService,
+  constructor(private userAuthService:UserAuthService,
       spinner:NgxSpinnerService,
        private authService:AuthService,
        private activatedRoute:ActivatedRoute,
@@ -30,7 +31,7 @@ export class LoginComponent extends BaseComponent {
       
       this.showSpinner(SpinnerType.Square)
 
-      await this.userService.googleLogin(user, ()=>{
+      await this.userAuthService.googleLogin(user, ()=>{
         
         this.authService.identityCheck()
         this.hideSpinner(SpinnerType.Square)})
@@ -46,7 +47,7 @@ export class LoginComponent extends BaseComponent {
 
     this.showSpinner(SpinnerType.BallSpin)
 
-    await this.userService.login(userNameOrEmail, password,()=>{  
+    await this.userAuthService.login(userNameOrEmail, password,()=>{  
       this.authService.identityCheck()
 
       this.activatedRoute.queryParams.subscribe(
