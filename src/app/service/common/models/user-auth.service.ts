@@ -24,6 +24,7 @@ export class UserAuthService {
 
     if(tokenResponse){
       localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken)
     }
 
     callBack()
@@ -32,6 +33,26 @@ export class UserAuthService {
       messageType: ToastrMessageType.success,
       position: ToastrPosition.BottomRight
     })
+
+  }
+
+  async refreshTokenLogin(refreshToken:String, callBack?:()=>void){
+
+    const observable:Observable<any |TokenResponse> = this.httpClientService.post({
+      action: "RefreshToken",
+      controller: "auth"
+    }, {refreshToken: refreshToken})
+
+
+    const tokenResponse: TokenResponse = await firstValueFrom(observable) as TokenResponse
+
+    if(tokenResponse){
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken)
+    }
+
+
+    callBack()
 
   }
 
@@ -46,6 +67,7 @@ export class UserAuthService {
 
     if(tokenResponse){
       localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken)
 
     
 
