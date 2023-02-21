@@ -53,7 +53,6 @@ export class ProductService {
 
     promiseDate.then(d => successCallBack())
       .catch((errorResponse:HttpErrorResponse) => errorCallBack(errorResponse.message))
-
       return await  promiseDate
   }
 
@@ -92,5 +91,21 @@ export class ProductService {
     )
     await firstValueFrom(deleteObservable)
     successCallBack()
+  }
+
+
+  async changeShowCaseImage(imageId:string, productId:string, callBack?:()=>void){
+    const observable: Observable<any> =  this.httpClientService.put(
+      {
+        controller:"products",
+        action: "ChangeShowCase",
+        queryString: `ImageId=${imageId}&ProductId=${productId}`
+      },
+      {}
+    )
+
+    await firstValueFrom(observable)
+
+    callBack()
   }
 }

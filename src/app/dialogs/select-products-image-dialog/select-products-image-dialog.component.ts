@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/base/base.component';
 import { ListProductImage } from 'src/app/contracts/list_product_image';
+import { AlertifyService, MessageType, Position } from 'src/app/service/admin/alertify.service';
 import { DialogService } from 'src/app/service/common/dialog.service';
 import { FileUploadOptions } from 'src/app/service/common/file-upload/file-upload.component';
 import { ProductService } from 'src/app/service/common/models/product.service';
@@ -22,7 +23,9 @@ export class SelectProductsImageDialogComponent extends BaseDialog<SelectProduct
     @Inject(MAT_DIALOG_DATA) public data: SelectProductsImageState | string,
     private productService:ProductService,
     private spinner:NgxSpinnerService,
-    private dialogService:DialogService
+    private dialogService:DialogService,
+    private alertify: AlertifyService
+
   ){
     super(dialogRef)
   }
@@ -36,6 +39,25 @@ export class SelectProductsImageDialogComponent extends BaseDialog<SelectProduct
       this.spinner.hide(SpinnerType.Square)
     })
     
+  }
+
+  showCase(imageId:string){
+    this.spinner.show(SpinnerType.BallSpin)
+    this.productService.changeShowCaseImage(imageId, this.data as string, ()=>{
+
+      this.spinner.hide(SpinnerType.BallSpin)
+
+      this.alertify.message("Urun Kapak Resmi Basariyla Secildi",{
+        position:Position.bottom_right,
+        messageType:MessageType.success
+      })
+
+
+
+
+    })
+
+
   }
 
   async deleteImage(imageId:string, event:any){

@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent } from 'src/app/base/base.component';
+import { BaseUrl } from 'src/app/contracts/base_url';
 import { ListProduct } from 'src/app/contracts/list_product';
+import { ListProductImage } from 'src/app/contracts/list_product_image';
+import { FileService } from 'src/app/service/common/models/file.service';
 import { ProductService } from 'src/app/service/common/models/product.service';
 
 @Component({
@@ -19,7 +22,8 @@ export class ListComponent extends BaseComponent implements OnInit{
   constructor(
     spinner:NgxSpinnerService,
      private productService: ProductService,
-     private activatedRoute: ActivatedRoute
+     private activatedRoute: ActivatedRoute,
+     private fileService: FileService
      ) {
     super(spinner);
 
@@ -30,10 +34,12 @@ export class ListComponent extends BaseComponent implements OnInit{
   totalPageCount : number
   pageSize: number = 12
   pageList: number[] = []
+  baseUrl: BaseUrl
+  
 
   products: ListProduct[]
-  ngOnInit() {
-
+  async ngOnInit() {
+    this.baseUrl = await this.fileService.getBaseStorageUrl();
     this.activatedRoute.params.subscribe(async params =>{
 
 
@@ -47,6 +53,61 @@ export class ListComponent extends BaseComponent implements OnInit{
       )
       
       this.products = data.products
+
+      this.products = this.products.map<ListProduct>(p => {
+        const listProduct: ListProduct = {
+          id: p.id,
+          createDate: p.createDate,
+          imagePath: "",
+          name: p.name,
+          price: p.price,
+          stock: p.stock,
+          updateDate: p.updateDate,
+          productImageFiles: p.productImageFiles
+        };
+
+        // p.productImageFiles.length ? p.productImageFiles.find(p => p.showcase).path : "",
+
+        if(p.productImageFiles.length != null ){
+          if(p.productImageFiles.find(p => p.showcase) != null){
+            listProduct.imagePath =  p.productImageFiles.find(p => p.showcase).path
+          }
+        }
+        return listProduct;
+      });
+        
+      // this.products.forEach((product, i) => {
+        
+      //   let p = {
+      //     name: product.name,
+      //     id : product.id,
+      //     price: product.price,
+      //     stock : product.stock,
+      //     updateDate : product.updateDate,
+      //     createDate: product.createDate,
+      //     imagePath: product.productImageFiles.length ? product.productImageFiles[0].path : ""
+      //   }
+
+
+      //   debugger
+      //   console.log(product.productImageFiles)
+      //   let a : ListProductImage [] =  product.productImageFiles
+      //   a.forEach(element => {
+
+      //     console.log("---")
+      //     console.log(element)
+      //     console.log(element.path)
+      //     console.log(element.showcase)
+      //     console.log(element.fileName)
+          
+      //   });
+      //   console.log(product.productImageFiles[3].showcase)
+
+      // })
+
+      
+
+
       this.totalProductCount = data.totalCount
       this.totalPageCount = Math.ceil(this.totalProductCount / this.pageSize)
 
