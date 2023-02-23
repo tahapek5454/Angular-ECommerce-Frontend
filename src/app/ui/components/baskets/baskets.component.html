@@ -1,1 +1,43 @@
-<p>baskets works!</p>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Alisveris Sepeti</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ürün</th>
+                        <th scope="col">Fiyat</th>
+                        <th  scope="col">Adet</th>
+                        <th  scope="col">Sil</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class={{basketItem.basketItemId}} *ngFor="let basketItem of basketItems; let i = index">
+                        <th scope="row">{{ i + 1}}</th>
+                        <td scope = "row">{{basketItem.name}}</td>
+                        <td scope = "row">{{basketItem.price}}</td>
+                        <td scope = "row">
+                            <input  type="number" value={{basketItem.quantity}} style="width: 60px;" data-id={{basketItem.basketItemId}} (change)="changeQuantity($event)">
+                        </td>
+                        <td scope = "row">
+
+                            <button type="button" class="btn btn-danger" (click)="removeBasketItem(basketItem.basketItemId)" >Sil</button>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-success">Alisverisi Tamamla</button>
+            </div>
+        </div>
+    </div>
+</div>
