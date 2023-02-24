@@ -15,11 +15,13 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
 
 import {GOOGLE_API_KEY} from "./constant"
 import { HttpErrorHandlerInterceptorService } from './service/common/http-error-handler-interceptor.service';
+import { DynamicLoadComponentDirective } from './directives/common/dynamic-load-component.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    DynamicLoadComponentDirective
   ],
   imports: [
     BrowserModule,

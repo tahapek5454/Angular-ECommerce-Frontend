@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { DynamicLoadComponentDirective } from './directives/common/dynamic-load-component.directive';
 import { AuthService } from './service/common/auth.service';
+import { ComponentName, DynamicLoadComponentService } from './service/common/dynamic-load-component.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from './service/ui/custom-toastr.service';
 declare var $:any
 
@@ -11,7 +13,12 @@ declare var $:any
 export class AppComponent {
   title = 'ECommerceFrontend';
 
-  constructor(private mytoastrService:CustomToastrService, public authService:AuthService){
+
+  @ViewChild(DynamicLoadComponentDirective, {static: true})
+  dynamicLoadComponentDirective: DynamicLoadComponentDirective
+
+  constructor(private mytoastrService:CustomToastrService, public authService:AuthService,
+    private dynamicLoadComponentService: DynamicLoadComponentService){
     authService.identityCheck()
   }
 
@@ -23,6 +30,16 @@ export class AppComponent {
     })
     localStorage.removeItem("accessToken")
     this.authService.identityCheck()
+  }
+
+  async loadComponent(){
+
+    await this.dynamicLoadComponentService.loadComponent(ComponentName.BasketComponent, 
+        this.dynamicLoadComponentDirective.viewContainerRef
+        
+      )
+
+
   }
 }
 
