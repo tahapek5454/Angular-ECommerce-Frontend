@@ -6,11 +6,14 @@ import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { ListBasketItem } from 'src/app/contracts/baskets/list_basket_items';
 import { UpdateBasketItem } from 'src/app/contracts/baskets/update_basket_item';
 import { CreateOrder } from 'src/app/contracts/orders/create_order';
+import { BasketItemDeleteState, BasketItemRemoveDialogComponent } from 'src/app/dialogs/basket-item-remove-dialog/basket-item-remove-dialog.component';
+import { ShoppingCompleteDialogComponent, ShoppingCompleteState } from 'src/app/dialogs/shopping-complete-dialog/shopping-complete-dialog.component';
+import { DialogService } from 'src/app/service/common/dialog.service';
 import { BasketService } from 'src/app/service/common/models/basket.service';
 import { OrderService } from 'src/app/service/common/models/order.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/service/ui/custom-toastr.service';
 
-declare var $:any
+declare var $: any
 
 @Component({
   selector: 'app-baskets',
@@ -19,15 +22,16 @@ declare var $:any
 })
 export class BasketsComponent extends BaseComponent implements OnInit {
 
-  constructor(spinnerService : NgxSpinnerService, 
-    private basketService: BasketService, 
-    private orderService:OrderService,
+  constructor(spinnerService: NgxSpinnerService,
+    private basketService: BasketService,
+    private orderService: OrderService,
     private toastr: CustomToastrService,
-    private router: Router){
+    private router: Router,
+    private dialogService: DialogService) {
     super(spinnerService)
   }
 
-  basketItems : ListBasketItem[]
+  basketItems: ListBasketItem[]
   async ngOnInit() {
     this.showSpinner(SpinnerType.BallAtom)
     this.basketItems = await this.basketService.get()
@@ -37,10 +41,10 @@ export class BasketsComponent extends BaseComponent implements OnInit {
   }
 
 
-  async changeQuantity(object){
+  async changeQuantity(object) {
     this.showSpinner(SpinnerType.BallAtom)
 
-    
+
     debugger
     const basketItemId: string = object.target.attributes["id"].value
     const quantity: number = object.target.value
@@ -54,42 +58,68 @@ export class BasketsComponent extends BaseComponent implements OnInit {
 
   }
 
-  async removeBasketItem(i: string){
-      this.showSpinner(SpinnerType.BallAtom)
+  removeBasketItem(i: string) {
+
+    $("#basketModal").modal("hide")
+
+    this.dialogService.openDialog({
+      componentType: BasketItemRemoveDialogComponent,
+      data: BasketItemDeleteState.Yes,
+      afterClosed: async () => {
+
+        this.showSpinner(SpinnerType.BallAtom)
 
 
-      await this.basketService.remove(i)
+        await this.basketService.remove(i)
 
 
-      $("." + i).fadeOut(500, ()=> {
+        $("." + i).fadeOut(500, () => {
 
-      this.hideSpinner(SpinnerType.BallAtom)
-        
+          this.hideSpinner(SpinnerType.BallAtom)
 
-      })
+        })
 
+         $("#basketModal").modal("show")
+
+      }
+
+    })
   }
 
-  async shoppingComplete(){
-    
-    this.showSpinner(SpinnerType.BallAtom)
-    let order: CreateOrder = new CreateOrder()
-    order.address = "Sakarya/Adapazari"
-    order.description = "3 Prenses Bekliyoruz :)"
+    shoppingComplete() {
 
-    await this.orderService.create(order)
-    this.hideSpinner(SpinnerType.BallAtom)
+      $("#basketModal").modal("hide")
 
-    this.toastr.message("Siparisiniz Onaylanmistir", "Siparis Onayi",{
+    this.dialogService.openDialog({
+      componentType: ShoppingCompleteDialogComponent,
+      data: ShoppingCompleteState.Yes,
+      afterClosed: async ()=>{
 
-      messageType: ToastrMessageType.success,
-      position: ToastrPosition.TopLeft
+        this.showSpinner(SpinnerType.BallAtom)
+        let order: CreateOrder = new CreateOrder()
+        order.address = "Sakarya/Adapazari"
+        order.description = "3 Prenses Bekliyoruz :)"
+
+        await this.orderService.create(order)
+        this.hideSpinner(SpinnerType.BallAtom)
+
+        this.toastr.message("Siparisiniz Onaylanmistir", "Siparis Onayi", {
+
+          messageType: ToastrMessageType.success,
+          position: ToastrPosition.TopLeft
+        })
+
+     
+        this.router.navigate(["/"])
+
+      }
+      
     })
 
-    this.router.navigate(["/"])
+    
 
   }
 
-  
+
 
 }
