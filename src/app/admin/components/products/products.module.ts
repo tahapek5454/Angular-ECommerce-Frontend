@@ -13,6 +13,8 @@ import { ListComponent } from './list/list.component';
 import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
 import { FileUploadModule } from 'src/app/service/common/file-upload/file-upload.module';
 import { DialogModule } from 'src/app/dialogs/dialog.module';
+import { DeleteDirectiveModule } from 'src/app/directives/admin/delete.directive.module';
+
 
 
 
@@ -21,8 +23,7 @@ import { DialogModule } from 'src/app/dialogs/dialog.module';
   declarations: [
     ProductsComponent,
     CreateComponent,
-    ListComponent,
-    DeleteDirective
+    ListComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +40,8 @@ import { DialogModule } from 'src/app/dialogs/dialog.module';
 
 
     FileUploadModule,
-    DialogModule
+    DialogModule,
+    DeleteDirectiveModule
   ],
   exports:[
     ProductsComponent
