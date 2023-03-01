@@ -1,6 +1,7 @@
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
+import { ResetPasswordState } from 'src/app/contracts/tokens/resetPasswordTokenState/resetPasswordState';
 import { TokenResponse } from 'src/app/contracts/tokens/tokenResponse';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr.service';
 import { HttpClientService } from '../http-client.service';
@@ -86,6 +87,34 @@ export class UserAuthService {
 
     callBack()
 
+  }
+
+  async passwordReset(email: string,  callBack? :()=> void):Promise<void>{
+
+    const observable: Observable<any> = this.httpClientService.post({
+      controller:"auth",
+      action:"PasswordReset"
+
+    }, {email: email})
+
+    await firstValueFrom(observable)
+
+    callBack()
+
+  }
+
+  async verifyResetToken(resetToken:string, userId:string, callBack?:()=>void):Promise<ResetPasswordState>{
+
+    const observable: Observable<any | ResetPasswordState> = this.httpClientService.post<any | ResetPasswordState>({
+      controller:"auth",
+      action:"VerifyResetToken"
+
+    }, {resetToken: resetToken, userId: userId})
+
+    const response : ResetPasswordState = await firstValueFrom(observable) as ResetPasswordState
+    callBack()
+
+    return response
   }
 
 }

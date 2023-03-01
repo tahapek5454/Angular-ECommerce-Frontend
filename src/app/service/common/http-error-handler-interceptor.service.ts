@@ -64,7 +64,7 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor{
 
         case HttpStatusCode.InternalServerError:
           this.toastrService.message(
-            "Sunucuya Erişilemiyor",
+            "Sunucuya Erişilemiyor - "+ error.error?.Message,
             "Hata",
             {
               messageType:ToastrMessageType.error,

@@ -27,9 +27,11 @@
 
                 <div class="mb-3 d-flex justify-content-center">
                   
-                    <button type="submit" class="btn btn-primary mb-3" 
+                    <button type="submit" class="btn btn-primary mb-3 mx-3" 
                     (click)="login(txtUserNameOrEmail.value, txtPassword.value)">Submit</button>
                     <asl-google-signin-button></asl-google-signin-button>
+                    <a type="submit" class="btn btn-secondary mb-3 mx-3" 
+                    routerLink="/password-reset">Forget Password</a>
                 </div>
 
           
