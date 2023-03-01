@@ -30,7 +30,7 @@ export class UserService {
      successCallBack?:()=>void, errorCallBack?:(error)=>void){
 
     const observable: Observable<any> = this.httpClientService.post<any>({
-      controller:"auth",
+      controller:"users",
       action:"UpdatePassword"
     }, {
       userId: userId,
