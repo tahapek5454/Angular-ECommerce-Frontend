@@ -39,6 +39,12 @@
          controller="orders"
          (callBack)="getOrders()"></td>
       </ng-container>
+
+      <ng-container matColumnDef="completed">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" > <img *ngIf="element.completed"  src="../../../../../assets/completed.png" 
+      > </td>
+      </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
