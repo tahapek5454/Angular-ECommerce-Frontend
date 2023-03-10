@@ -58,6 +58,15 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor{
 
           })
           .then(data =>{
+
+            this.toastrService.message(
+              "Bu islemi yapmaya yetkiniz yoktur",
+              "Hata",
+              {
+                messageType:ToastrMessageType.error,
+                position:ToastrPosition.BottomRight
+              }
+            )
             
           })
           break

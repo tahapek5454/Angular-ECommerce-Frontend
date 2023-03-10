@@ -64,7 +64,7 @@ export class UserService {
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(value => successCallBack())
-    .catch(error => errorCallBack(error))
+    
 
     return await promiseData
   }
