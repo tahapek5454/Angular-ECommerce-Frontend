@@ -19,7 +19,7 @@ declare var $:any
 export class ListComponent extends BaseComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['orderCode','userName','totalPrice','createdDate','viewdetail','delete','completed'];
+  displayedColumns: string[] = ['orderCode','userName','totalPrice','createdDate','viewdetail','completed'];
   dataSource:MatTableDataSource<ListOrder>= null
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
